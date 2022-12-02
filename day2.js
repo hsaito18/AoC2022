@@ -1,14 +1,6 @@
 const fs = require("fs");
 const input = fs.readFileSync("./inputs/day2.txt").toString().split("\n");
 
-const HAND_SCORE = {
-  X: 1,
-  Y: 2,
-  Z: 3,
-};
-
-const RESULT_SCORE = {};
-
 // A,X - ROCK
 // B,Y - PAPER
 // C,Z - SCISSORS
