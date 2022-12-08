@@ -1,5 +1,4 @@
 const fs = require("fs");
-const { maxHeaderSize } = require("http");
 let input = fs.readFileSync("./inputs/day8.txt").toString().split("\n");
 input = input.map((l) => l.trim());
 
