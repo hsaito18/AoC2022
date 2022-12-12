@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/hsaito18/AoC2022/issues"
   },
-  "homepage": "https://github.com/hsaito18/AoC2022#readme"
+  "homepage": "https://github.com/hsaito18/AoC2022#readme",
+  "dependencies": {
+    "js-priority-queue": "^0.1.5"
+  }
 }
