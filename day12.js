@@ -1,7 +1,8 @@
 const fs = require("fs");
 let input = fs.readFileSync("./inputs/day12.txt").toString().split("\n");
 input = input.map((l) => l.trim());
-
+// https://en.wikipedia.org/wiki/A*_search_algorithm
+// https://www.npmjs.com/package/js-priority-queue
 let grid = [];
 let goalPos = [];
 let startPos = [];
