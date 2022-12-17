@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/hsaito18/AoC2022#readme",
   "dependencies": {
-    "js-priority-queue": "^0.1.5"
+    "js-priority-queue": "^0.1.5",
+    "timsort": "^0.3.0"
   }
 }
