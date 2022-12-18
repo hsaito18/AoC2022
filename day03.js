@@ -32,19 +32,18 @@ const findTriplicate = (lines) => {
     .filter((item) => lines[2].split("").includes(item));
 };
 
-let sum = 0;
-let sum2 = 0;
+let result1 = 0;
+let result2 = 0;
 let triplets = [];
 for (let line of input) {
   if (line.length < 1) continue;
   triplets.push(line);
   if (triplets.length == 3) {
-    sum2 += calculatePrio(findTriplicate(triplets)[0]);
+    result2 += calculatePrio(findTriplicate(triplets)[0]);
     triplets = [];
   }
   let dup = findDuplicate(line);
-  sum += calculatePrio(dup);
+  result1 += calculatePrio(dup);
 }
-
-console.log(sum);
-console.log(sum2);
+console.log(`Part 1: ${result1}`);
+console.log(`Part 2: ${result2}`);

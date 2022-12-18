@@ -43,7 +43,6 @@ for (let line of input) {
 let result1 = 0;
 for (let idx of [20, 60, 100, 140, 180, 220]) {
   result1 += states[idx] * idx;
-  console.log(states[idx], idx);
 }
 let result2 = "";
 let horiz = 0;
