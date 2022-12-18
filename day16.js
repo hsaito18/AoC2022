@@ -19,48 +19,6 @@ class Valve {
     this.notAlreadyOpened = JSON.parse(JSON.stringify(notAlreadyOpened));
   }
 
-  getValves() {
-    if (this.time == 0) return [];
-    let neighbourValves = [];
-    let nextTime = this.time - 1;
-    let nextTimeWithOpen = this.time - 2;
-    for (let t of this.tunnels) {
-      if (
-        valves[t].flowrate > 0 &&
-        this.time > 1 &&
-        this.notAlreadyOpened.hasOwnProperty(t)
-      ) {
-        let asArr = Object.entries(this.notAlreadyOpened);
-        let filtered = asArr.filter(([key, val]) => key !== t);
-        let nextNotAlreadyOpened = Object.fromEntries(filtered);
-        let nextScore = this.score + nextTimeWithOpen * valves[t].flowrate;
-        neighbourValves.push(
-          new Valve(
-            t,
-            valves[t].flowrate,
-            valves[t].tunnels,
-            nextTimeWithOpen,
-            nextScore,
-            nextNotAlreadyOpened
-          )
-        );
-      }
-      if (this.time > 0) {
-        neighbourValves.push(
-          new Valve(
-            t,
-            valves[t].flowrate,
-            valves[t].tunnels,
-            nextTime,
-            this.score,
-            this.notAlreadyOpened
-          )
-        );
-      }
-    }
-    return neighbourValves;
-  }
-
   getNeighbours() {
     let neighbours = [];
     for (let t of this.tunnels) {
@@ -73,19 +31,7 @@ class Valve {
   }
 }
 
-function getShortestDistToFlow(valve) {
-  let flowValves = Object.keys(valve.notAlreadyOpened);
-  let minDist = Infinity;
-  for (let v of flowValves) {
-    if (allDists[valve.name][v] < minDist) {
-      minDist = allDists[valve.name][v];
-    }
-  }
-
-  return minDist;
-}
-
-function AStarx(start, end) {
+function findShortestPath(start, end) {
   function getGScore(key) {
     if (gScore.get(key) === undefined) return Infinity;
     return gScore.get(key);
@@ -128,7 +74,7 @@ function generateDistancesBetweenFlowValves() {
   for (let v of Object.values(flowValves)) {
     flowDists[v.name] = {};
     for (let v2 of Object.values(flowValves)) {
-      flowDists[v.name][v2.name] = AStarx(v, v2);
+      flowDists[v.name][v2.name] = findShortestPath(v, v2);
     }
   }
   return flowDists;
@@ -137,33 +83,9 @@ function generateDistancesBetweenFlowValves() {
 function generateDistancesToFlowValves(startValve) {
   let flowDists = {};
   for (let v of Object.values(flowValves)) {
-    flowDists[v.name] = AStarx(startValve, v);
+    flowDists[v.name] = findShortestPath(startValve, v);
   }
   return flowDists;
-}
-
-function getMaxPossibleScore(valve) {
-  // currScore, //time, //notAlreadyOpened: {"AA": 2}//tunnels
-  let potentialScore = valve.score;
-  let flows = Object.values(valve.notAlreadyOpened);
-  TimSort.sort(flows, (a, b) => b - a);
-  let timeDist = getShortestDistToFlow(valve);
-  let time = valve.time - timeDist - 1;
-  for (let f of flows) {
-    potentialScore += time * f;
-    time -= 2;
-    if (time < 0) break;
-  }
-  // for (let [name, flow] of Object.entries(valve.notAlreadyOpened)) {
-  //   if (valve.tunnels.includes(name)) {
-  //     if (valve.time - 2 > 0) {
-  //       potentialScore += (valve.time - 2) * flow;
-  //     }
-  //   } else if (valve.time - 3 > 0) {
-  //     potentialScore += (valve.time - 3) * flow;
-  //   }
-  // }
-  return potentialScore;
 }
 
 function simpleGetMaxPossibleScore(path, time1, time2, score) {
